@@ -22,32 +22,56 @@ public class EmailServiceImpl implements EmailService {
 
 	@Override
 	public String countMessages() {
-		Message[] messages = getMessages();
-		return messages.length + " messages";
+		String[] messages = getMessages();
+
+		String string = "";
+		for (String message : messages) {
+			string += message + "<br>";
+		}
+
+		return string;
 	}
 
-	private Message[] getMessages() {
+	private String[] getMessages() {
 		Properties props = new Properties();
-		props.put("mail.pop3.host", emailHost);
-		props.put("mail.pop3.port", emailPort);
-		props.put("mail.pop3.starttls.enable", true);
-		props.put("mail.store.protocol", "pop3");
+		props.put("mail.imap.host", emailHost);
+		props.put("mail.imap.port", emailPort);
+		props.put("mail.imap.ssl.enable", true);
+		props.put("mail.store.protocol", "imap");
 
 		Session session = Session.getInstance(props);
 
 		try {
-			Store store = session.getStore("pop3s");
+			Store store = session.getStore("imap");
 			store.connect(emailHost, emailUsername, emailPassword);
+
+			/* get all folders
+			
+			Folder defaultFolder = store.getDefaultFolder();
+			folder[] folders = defaultFolder.list("*");
+			for (Folder folder : folders) {
+				System.out.println(folder.getFullName() + ": " + folder.getMessageCount());
+			}
+			
+			*/
 
 			Folder folder = store.getFolder("INBOX");
 			folder.open(Folder.READ_ONLY);
 
 			Message[] messages = folder.getMessages();
 
-			return messages;
+			String[] strings = new String[messages.length];
+			for (int i = 0; i < messages.length; i++) {
+				strings[i] = messages[i].getSubject();
+			}
+
+			folder.close();
+			store.close();
+
+			return strings;
 		} catch (Exception e) {
 			e.printStackTrace();
-			return null;
+			return new String[]{};
 		}
 	}
 
