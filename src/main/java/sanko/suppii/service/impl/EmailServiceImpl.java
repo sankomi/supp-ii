@@ -2,6 +2,7 @@ package sanko.suppii.service.impl;
 
 import java.util.*;
 import javax.mail.*;
+import javax.mail.search.FlagTerm;
 
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Value;
@@ -58,7 +59,10 @@ public class EmailServiceImpl implements EmailService {
 			Folder folder = store.getFolder("INBOX");
 			folder.open(Folder.READ_ONLY);
 
-			Message[] messages = folder.getMessages();
+			//Message[] messages = folder.getMessages();
+			Message[] messages = folder.search(
+				new FlagTerm(new Flags(Flags.Flag.SEEN), false)
+			);
 
 			String[] strings = new String[messages.length];
 			for (int i = 0; i < messages.length; i++) {
