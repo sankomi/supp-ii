@@ -57,7 +57,7 @@ public class EmailServiceImpl implements EmailService {
 			*/
 
 			Folder folder = store.getFolder("INBOX");
-			folder.open(Folder.READ_ONLY);
+			folder.open(Folder.READ_WRITE);
 
 			//Message[] messages = folder.getMessages();
 			Message[] messages = folder.search(
@@ -67,6 +67,7 @@ public class EmailServiceImpl implements EmailService {
 			String[] strings = new String[messages.length];
 			for (int i = 0; i < messages.length; i++) {
 				strings[i] = messages[i].getSubject();
+				messages[i].setFlag(Flags.Flag.SEEN, true);
 			}
 
 			folder.close();
