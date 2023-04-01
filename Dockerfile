@@ -8,6 +8,8 @@ RUN mvn package
 
 FROM ubuntu:lunar
 RUN apt-get update && apt-get install -y openjdk-17-jre
-COPY --from=build /app/target/supp-ii-0.0.1-SNAPSHOT.jar /app/supp-ii.jar
+WORKDIR /app
+COPY --from=build /app/target/supp-ii-0.0.1-SNAPSHOT.jar ./supp-ii.jar
+COPY config ./config
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "/app/supp-ii.jar"]
+ENTRYPOINT ["java", "-jar", "supp-ii.jar"]
