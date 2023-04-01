@@ -1,19 +1,26 @@
 package sanko.suppii.controller;
 
 import org.springframework.web.bind.annotation.*;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import sanko.suppii.service.EmailService;
 
 @RestController
 public class EmailController {
 
-	@Autowired
-	private EmailService emailService;
+	private final EmailService emailService;
+
+	public EmailController(EmailService emailService) {
+		this.emailService = emailService;
+	}
 
 	@GetMapping("/")
 	public String countMessage() {
 		return emailService.countMessages();
+	}
+
+	@GetMapping("/test")
+	public String testTest() {
+		return "test";
 	}
 
 }
