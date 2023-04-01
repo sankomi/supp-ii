@@ -1,0 +1,2 @@
+#!/bin/bash
+docker run -d --rm -p 3000:8080 sanko/supp-ii
