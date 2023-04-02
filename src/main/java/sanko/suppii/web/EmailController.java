@@ -1,8 +1,9 @@
-package sanko.suppii.controller;
+package sanko.suppii.web;
 
 import org.springframework.web.bind.annotation.*;
 
 import sanko.suppii.service.EmailService;
+import sanko.suppii.web.dto.EmailResponseDto;
 
 @RestController
 public class EmailController {
@@ -21,6 +22,11 @@ public class EmailController {
 	@GetMapping("/test")
 	public String testTest() {
 		return "test";
+	}
+
+	@GetMapping("/email/dto")
+	public EmailResponseDto emailDto(@RequestParam("subject") String subject) {
+		return new EmailResponseDto(subject);
 	}
 
 }

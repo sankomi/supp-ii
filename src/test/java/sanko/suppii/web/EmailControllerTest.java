@@ -1,4 +1,4 @@
-package sanko.suppii.controller;
+package sanko.suppii.web;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,6 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import sanko.suppii.service.EmailService;
+import sanko.suppii.web.dto.EmailResponseDto;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest
@@ -32,6 +33,17 @@ public class EmailControllerTest {
 		mvc.perform(get("/test"))
 			.andExpect(status().isOk())
 			.andExpect(content().string(test));
+	}
+	
+	@Test
+	public void emailDtoTest() throws Exception {
+		String subject = "test subject";
+		mvc.perform(
+			get("/email/dto")
+				.param("subject", subject)
+		)
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.subject", is(subject)));
 	}
 
 }
