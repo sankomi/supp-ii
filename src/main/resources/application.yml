@@ -1,3 +1,9 @@
 spring:
   jpa:
     show_sql: true
+    database-platform: org.hibernate.community.dialect.SQLiteDialect
+    hibernate:
+      ddl-auto: update
+  datasource:
+    url: jdbc:sqlite:db/sqlite.db
+    driver-class-name: org.sqlite.JDBC

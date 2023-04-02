@@ -4,6 +4,7 @@ COPY pom.xml .
 RUN mvn verify --fail-never
 COPY src ./src
 COPY config ./config
+RUN mkdir db
 RUN mvn package
 
 FROM ubuntu:lunar
