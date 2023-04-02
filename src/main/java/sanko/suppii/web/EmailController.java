@@ -15,8 +15,15 @@ public class EmailController {
 	}
 
 	@GetMapping("/")
-	public String countMessage() {
-		return emailService.countMessages();
+	public String listMessages() {
+		return emailService.listMessages();
+	}
+
+	@GetMapping("/fetch")
+	public String fetchMessages() {
+		boolean fetched = emailService.fetchMessages();
+		if (fetched) return "fetched";
+		else return "failed";
 	}
 
 	@GetMapping("/test")

@@ -2,6 +2,7 @@ package sanko.suppii.service;
 
 public interface EmailService {
 
-	public String countMessages();
+	public String listMessages();
+	public boolean fetchMessages();
 
 }
