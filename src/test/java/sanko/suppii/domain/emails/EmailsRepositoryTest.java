@@ -26,8 +26,15 @@ public class EmailsRepositoryTest {
 	public void testSaveFind() {
 		//given
 		String subject = "test subject";
+		String text = "test text";
 
-		emailsRepository.save(Emails.builder().subject(subject).build());
+		emailsRepository.save(
+			Emails
+				.builder()
+				.subject(subject)
+				.text(text)
+				.build()
+		);
 
 		//when
 		List<Emails> emailsList = emailsRepository.findAll();
@@ -35,6 +42,7 @@ public class EmailsRepositoryTest {
 		//then
 		Emails emails = emailsList.get(0);
 		assertThat(emails.getSubject()).isEqualTo(subject);
+		assertThat(emails.getText()).isEqualTo(text);
 	}
 
 }

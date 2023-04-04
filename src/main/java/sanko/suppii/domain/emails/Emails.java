@@ -16,9 +16,13 @@ public class Emails {
 	@Column(nullable = false)
 	private String subject;
 
+	@Column(columnDefinition = "TEXT")
+	private String text;
+
 	@Builder
-	public Emails(String subject) {
+	public Emails(String subject, String text) {
 		this.subject = subject;
+		this.text = text;
 	}
 
 }
