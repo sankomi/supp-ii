@@ -1,18 +1,23 @@
-package sanko.suppii.service.impl;
+package sanko.suppii.service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 import javax.mail.*;
 import javax.mail.search.FlagTerm;
+import java.lang.IllegalArgumentException;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.*; //Autowired, Value
 
-import sanko.suppii.service.EmailService;
 import sanko.suppii.domain.emails.Emails;
 import sanko.suppii.domain.emails.EmailsRepository;
+import sanko.suppii.web.dto.EmailsResponseDto;
+import sanko.suppii.web.dto.EmailsListResponseDto;
 
+@RequiredArgsConstructor
 @Service
-public class EmailServiceImpl implements EmailService {
+public class EmailsService {
 
 	@Value("${email.host}")
 	private String emailHost;
@@ -23,23 +28,19 @@ public class EmailServiceImpl implements EmailService {
 	@Value("${email.password}")
 	private String emailPassword;
 
-	@Autowired
-	private EmailsRepository emailsRepository;
+	private final EmailsRepository emailsRepository;
 
-	@Override
-	public String listMessages() {
-		List<Emails> emailsList = emailsRepository.findAll();
-
-		String string = "";
-		for (Emails emails : emailsList) {
-			string += emails.getSubject() + ": " + emails.getText() + "<br>";
-		}
-
-		return string;
+	public List<EmailsListResponseDto> listEmails() {
+		return emailsRepository.findAll().stream().map(EmailsListResponseDto::new).collect(Collectors.toList());
 	}
 
-	@Override
-	public boolean fetchMessages() {
+	public EmailsResponseDto getEmailsById(Long id) {
+		Emails entity = emailsRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("no emails with id = " + id));
+
+		return new EmailsResponseDto(entity);
+	}
+
+	public boolean fetchEmails() {
 		Properties props = new Properties();
 		props.put("mail.imap.host", emailHost);
 		props.put("mail.imap.port", emailPort);
