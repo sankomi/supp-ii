@@ -4,10 +4,12 @@ import jakarta.persistence.*;
 
 import lombok.*;
 
+import sanko.suppii.domain.BaseTimeEntity;
+
 @Getter
 @NoArgsConstructor
 @Entity
-public class Emails {
+public class Emails extends BaseTimeEntity {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

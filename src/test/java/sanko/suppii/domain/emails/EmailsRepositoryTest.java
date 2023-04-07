@@ -1,6 +1,7 @@
 package sanko.suppii.domain.emails;
 
 import java.util.*; //List, ArrayList
+import java.time.LocalDateTime;
 
 import org.junit.*; //After, Test
 import org.junit.runner.RunWith;
@@ -44,6 +45,29 @@ public class EmailsRepositoryTest {
 		Emails emails = emailsList.get(0);
 		assertThat(emails.getSubject()).isEqualTo(subject);
 		assertThat(emails.getText()).isEqualTo(text);
+	}
+
+	@Test
+	public void testDates() {
+		emailsRepository.deleteAll();
+
+		//given
+		LocalDateTime now = LocalDateTime.of(2023, 4, 6, 0, 0, 0);
+		emailsRepository.save(
+			Emails
+				.builder()
+				.subject("test subject")
+				.text("test text")
+				.build()
+		);
+
+		//when
+		List<Emails> emailsList = emailsRepository.findAll();
+
+		//then
+		Emails emails = emailsList.get(0);
+		assertThat(emails.getCreatedDate()).isAfter(now);
+		assertThat(emails.getModifiedDate()).isAfter(now);
 	}
 
 }

@@ -10,7 +10,7 @@ import sanko.suppii.web.dto.EmailsResponseDto;
 import sanko.suppii.web.dto.EmailsListResponseDto;
 
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/email")
+@RequestMapping("/api/v1/emails")
 @RestController
 public class EmailsApiController {
 
