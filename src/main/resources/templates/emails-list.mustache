@@ -1,0 +1,12 @@
+{{>layout/header}}
+
+<h1>Emails List</h1>
+<ul>
+	{{#emailsList}}
+	<li>
+		<a href="/emails/{{id}}">{{subject}}</a>
+	</li>
+	{{/emailsList}}
+</ul>	
+
+{{>layout/footer}}

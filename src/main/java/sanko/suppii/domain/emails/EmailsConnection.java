@@ -6,6 +6,7 @@ import javax.mail.search.FlagTerm;
 
 import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Value;
+import org.jsoup.Jsoup;
 
 @Component
 public class EmailsConnection {
@@ -52,10 +53,13 @@ public class EmailsConnection {
 
 			List<Emails> emailsList = new ArrayList<>();
 			for (int i = 0; i < messages.length; i++) {
+				String text = getText(messages[i]);
+				String cleanText = Jsoup.parse(text).text();
+
 				emailsList.add(
 					Emails.builder()
 						.subject(messages[i].getSubject())
-						.text(getText(messages[i]))
+						.text(cleanText)
 						.build()
 				);
 				messages[i].setFlag(Flags.Flag.SEEN, true);
