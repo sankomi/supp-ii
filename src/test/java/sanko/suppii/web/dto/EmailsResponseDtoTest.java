@@ -9,7 +9,7 @@ public class EmailsResponseDtoTest {
 
 	@Test
 	public void testEmailsResponse() {
-		//givenS
+		//given
 		String subject = "test subject";
 		String text = "test text";
 		Emails emails = Emails.builder().subject(subject).text(text).build();
