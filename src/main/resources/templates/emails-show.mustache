@@ -2,7 +2,14 @@
 
 {{#emails}}
 <h1>{{subject}}</h1>
+<div>{{sender}}</div>
 <div>{{text}}</div>
 {{/emails}}
+
+{{#replys}}
+<h2>{{subject}}</h2>
+<div>{{sender}}</div>
+<div>{{text}}</div>
+{{/replys}}
 
 {{>layout/footer}}

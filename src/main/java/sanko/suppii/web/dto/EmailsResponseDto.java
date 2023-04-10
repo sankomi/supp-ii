@@ -10,12 +10,14 @@ public class EmailsResponseDto {
 	private final Long id;
 	private final String subject;
 	private final String sender;
+	private final Long start;
 	private final String text;
 
 	public EmailsResponseDto(Emails entity) {
 		this.id = entity.getId();
 		this.sender = entity.getSender();
 		this.subject = entity.getSubject();
+		this.start = entity.getStart();
 		this.text = entity.getText();
 	}
 

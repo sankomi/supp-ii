@@ -27,6 +27,7 @@ public class IndexController {
 	@GetMapping("/emails/{id}")
 	public String showEmais(Model model, @PathVariable Long id) {
 		model.addAttribute("emails", emailsService.getEmailsById(id));
+		model.addAttribute("replys", emailsService.getReplyEmailsById(id));
 		return "emails-show";
 	}
 

@@ -94,6 +94,7 @@ public class EmailsServiceTest {
 		assertThat(responseDto.getId()).isEqualTo(replyId);
 		assertThat(responseDto.getSubject()).isEqualTo(subject);
 		assertThat(responseDto.getSender()).isEqualTo(sender);
+		assertThat(responseDto.getStart()).isEqualTo(id);
 		assertThat(responseDto.getText()).isEqualTo(replyText);
 	}
 

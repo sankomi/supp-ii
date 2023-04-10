@@ -6,7 +6,7 @@ import java.lang.IllegalArgumentException;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.*; //Autowired, Value
 
 import sanko.suppii.domain.emails.Emails;
 import sanko.suppii.domain.emails.EmailsRepository;
@@ -19,11 +19,14 @@ import sanko.suppii.web.dto.EmailsReplyRequestDto;
 @Service
 public class EmailsService {
 
+	@Value("${email.username}")
+	private String username;
+
 	private final EmailsRepository emailsRepository;
 	private final EmailsConnection emailsConnection;
 
 	public List<EmailsListResponseDto> listEmails() {
-		return emailsRepository.findAll()
+		return emailsRepository.findByStartIsNull()
 			.stream()
 			.map(EmailsListResponseDto::new)
 			.collect(Collectors.toList());
@@ -34,6 +37,13 @@ public class EmailsService {
 			.orElseThrow(() -> new IllegalArgumentException("no emails with id = " + id));
 
 		return new EmailsResponseDto(entity);
+	}
+
+	public List<EmailsResponseDto> getReplyEmailsById(Long id) {
+		return emailsRepository.findByStartEqualsOrderByIdAsc(id)
+			.stream()
+			.map(EmailsResponseDto::new)
+			.collect(Collectors.toList());
 	}
 
 	public boolean fetchEmails() {
@@ -52,7 +62,8 @@ public class EmailsService {
 			.orElseThrow(() -> new IllegalArgumentException("no emails with id = " + id));
 		Emails reply = Emails.builder()
 			.subject(emails.getSubject())
-			.sender(emails.getSender())
+			.sender(username)
+			.start(emails.getStart() == null? emails.getId(): emails.getStart())
 			.text(requestDto.getText())
 			.build();
 		emailsConnection.sendEmails(reply);

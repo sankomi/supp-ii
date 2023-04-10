@@ -67,6 +67,7 @@ public class EmailsConnection {
 					Emails.builder()
 						.subject(messages[i].getSubject())
 						.sender(sender)
+						.start(null)
 						.text(cleanText)
 						.build()
 				);

@@ -12,10 +12,12 @@ public class EmailsResponseDtoTest {
 		//given
 		String subject = "test subject";
 		String sender = "test@example.com";
+		Long start = 1L;
 		String text = "test text";
 		Emails emails = Emails.builder()
 			.subject(subject)
 			.sender(sender)
+			.start(start)
 			.text(text)
 			.build();
 		
@@ -25,6 +27,7 @@ public class EmailsResponseDtoTest {
 		//then
 		assertThat(dto.getSubject()).isEqualTo(subject);
 		assertThat(dto.getSender()).isEqualTo(sender);
+		assertThat(dto.getStart()).isEqualTo(start);
 		assertThat(dto.getText()).isEqualTo(text);
 	}
 
