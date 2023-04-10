@@ -3,6 +3,7 @@ package sanko.suppii.domain.emails;
 import jakarta.persistence.*;
 
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import sanko.suppii.domain.BaseTimeEntity;
 
@@ -18,12 +19,16 @@ public class Emails extends BaseTimeEntity {
 	@Column(nullable = false)
 	private String subject;
 
+	@Column
+	private String sender;
+
 	@Column(columnDefinition = "TEXT")
 	private String text;
 
 	@Builder
-	public Emails(String subject, String text) {
+	public Emails(String subject, String sender, String text) {
 		this.subject = subject;
+		this.sender = sender;
 		this.text = text;
 	}
 

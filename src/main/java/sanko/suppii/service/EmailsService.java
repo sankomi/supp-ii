@@ -52,8 +52,10 @@ public class EmailsService {
 			.orElseThrow(() -> new IllegalArgumentException("no emails with id = " + id));
 		Emails reply = Emails.builder()
 			.subject(emails.getSubject())
+			.sender(emails.getSender())
 			.text(requestDto.getText())
 			.build();
+		emailsConnection.sendEmails(reply);
 		return emailsRepository.save(reply).getId();
 	}
 

@@ -11,14 +11,20 @@ public class EmailsListResponseDtoTest {
 	public void testEmailsListResponse() {
 		//givenS
 		String subject = "test subject";
+		String sender = "test@example.com";
 		String text = "test text";
-		Emails emails = Emails.builder().subject(subject).text(text).build();
+		Emails emails = Emails.builder()
+			.subject(subject)
+			.sender(sender)
+			.text(text)
+			.build();
 		
 		//when
 		EmailsListResponseDto dto = new EmailsListResponseDto(emails);
 		
 		//then
 		assertThat(dto.getSubject()).isEqualTo(subject);
+		assertThat(dto.getSender()).isEqualTo(sender);
 	}
 
 }

@@ -1,8 +1,9 @@
 package sanko.suppii.domain.emails;
 
 import java.util.*; //List, ArrayList
-import javax.mail.*;
+import javax.mail.*; //Address, Authenticator, Message, Session, PasswordAuthentication, Transport
 import javax.mail.search.FlagTerm;
+import javax.mail.internet.*; //InternetAddress, MimeMessage
 
 import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,6 +16,10 @@ public class EmailsConnection {
 	private String emailHost;
 	@Value("${email.port}")
 	private String emailPort;
+	@Value("${email.smtp-host}")
+	private String smtpHost;
+	@Value("${email.smtp-port}")
+	private String smtpPort;
 	@Value("${email.username}")
 	private String emailUsername;
 	@Value("${email.password}")
@@ -55,10 +60,13 @@ public class EmailsConnection {
 			for (int i = 0; i < messages.length; i++) {
 				String text = getText(messages[i]);
 				String cleanText = Jsoup.parse(text).text();
+				Address[] froms = messages[i].getFrom();
+				String sender = froms == null? null: ((InternetAddress) froms[0]).getAddress();
 
 				emailsList.add(
 					Emails.builder()
 						.subject(messages[i].getSubject())
+						.sender(sender)
 						.text(cleanText)
 						.build()
 				);
@@ -116,6 +124,30 @@ public class EmailsConnection {
 		return null;
 	}
 
-	
+	public void sendEmails(Emails emails) {
+		Properties props = new Properties();
+		props.put("mail.smtp.host", smtpHost);
+		props.put("mail.smtp.port", smtpPort);
+		props.put("mail.smtp.starttls.enable", true);
+		props.put("mail.smtp.auth", true);
+
+		Session session = Session.getInstance(props, new Authenticator() {
+			protected PasswordAuthentication getPasswordAuthentication() {
+				return new PasswordAuthentication(emailUsername, emailPassword);
+			}
+		});
+
+		try {
+			MimeMessage message = new MimeMessage(session);
+			message.setFrom(new InternetAddress(emailUsername));
+			message.addRecipient(Message.RecipientType.TO, new InternetAddress(emails.getSender()));
+			message.setSubject(emails.getSubject());
+			message.setText(emails.getText());
+
+			Transport.send(message);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}	
 
 }

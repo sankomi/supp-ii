@@ -3,3 +3,5 @@ email:
   port:
   username:
   password:
+  smtp-host:
+  smtp-port:

@@ -29,11 +29,13 @@ public class EmailsRepositoryTest {
 
 		//given
 		String subject = "test subject";
+		String sender = "test@example.com";
 		String text = "test text";
 		emailsRepository.save(
 			Emails
 				.builder()
 				.subject(subject)
+				.sender(sender)
 				.text(text)
 				.build()
 		);
@@ -44,6 +46,7 @@ public class EmailsRepositoryTest {
 		//then
 		Emails emails = emailsList.get(0);
 		assertThat(emails.getSubject()).isEqualTo(subject);
+		assertThat(emails.getSender()).isEqualTo(sender);
 		assertThat(emails.getText()).isEqualTo(text);
 	}
 
@@ -57,6 +60,7 @@ public class EmailsRepositoryTest {
 			Emails
 				.builder()
 				.subject("test subject")
+				.sender("test@example.com")
 				.text("test text")
 				.build()
 		);
