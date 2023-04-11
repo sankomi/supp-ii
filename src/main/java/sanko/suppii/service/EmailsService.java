@@ -60,10 +60,18 @@ public class EmailsService {
 	public Long replyEmails(Long id, EmailsReplyRequestDto requestDto) {
 		Emails emails = emailsRepository.findById(id)
 			.orElseThrow(() -> new IllegalArgumentException("no emails with id = " + id));
+		Long start = emails.getStart();
+		String subject;
+		if (start == null) {
+			start = emails.getId();
+			subject = "Re: " + emails.getSubject() + " [t#" + start + "]";
+		} else {
+			subject = emails.getSubject();
+		}
 		Emails reply = Emails.builder()
-			.subject(emails.getSubject())
-			.sender(username)
-			.start(emails.getStart() == null? emails.getId(): emails.getStart())
+			.subject(subject)
+			.sender(emails.getSender())
+			.start(start)
 			.text(requestDto.getText())
 			.build();
 		emailsConnection.sendEmails(reply);

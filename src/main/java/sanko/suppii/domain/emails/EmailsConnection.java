@@ -58,8 +58,21 @@ public class EmailsConnection {
 
 			List<Emails> emailsList = new ArrayList<>();
 			for (int i = 0; i < messages.length; i++) {
+				String subject = messages[i].getSubject();
+				int startIndex = subject.indexOf("[t#");
+				Long start = null;
+				if (startIndex != -1) {
+					int endIndex = subject.indexOf("]", startIndex);
+					if (~endIndex != -1) {
+						String middleString = subject.substring(startIndex + 3, endIndex); 
+						Long middleLong = Long.parseLong(middleString);
+						start = middleLong > 0? middleLong: null;
+					}
+				}
+
 				String text = getText(messages[i]);
 				String cleanText = Jsoup.parse(text).text();
+
 				Address[] froms = messages[i].getFrom();
 				String sender = froms == null? null: ((InternetAddress) froms[0]).getAddress();
 
@@ -67,7 +80,7 @@ public class EmailsConnection {
 					Emails.builder()
 						.subject(messages[i].getSubject())
 						.sender(sender)
-						.start(null)
+						.start(start)
 						.text(cleanText)
 						.build()
 				);
