@@ -138,7 +138,7 @@ public class EmailsConnection {
 		return null;
 	}
 
-	public void sendEmails(Emails emails) {
+	public void sendEmails(String to, Emails emails) {
 		Properties props = new Properties();
 		props.put("mail.smtp.host", smtpHost);
 		props.put("mail.smtp.port", smtpPort);
@@ -153,8 +153,8 @@ public class EmailsConnection {
 
 		try {
 			MimeMessage message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(emailUsername));
-			message.addRecipient(Message.RecipientType.TO, new InternetAddress(emails.getSender()));
+			message.setFrom(new InternetAddress(emails.getSender()));
+			message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
 			message.setSubject(emails.getSubject());
 			message.setText(emails.getText());
 

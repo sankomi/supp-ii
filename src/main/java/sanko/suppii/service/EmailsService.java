@@ -20,7 +20,7 @@ import sanko.suppii.web.dto.EmailsReplyRequestDto;
 public class EmailsService {
 
 	@Value("${email.username}")
-	private String username;
+	private String emailUsername;
 
 	private final EmailsRepository emailsRepository;
 	private final EmailsConnection emailsConnection;
@@ -70,11 +70,11 @@ public class EmailsService {
 		}
 		Emails reply = Emails.builder()
 			.subject(subject)
-			.sender(emails.getSender())
+			.sender(emailUsername)
 			.start(start)
 			.text(requestDto.getText())
 			.build();
-		emailsConnection.sendEmails(reply);
+		emailsConnection.sendEmails(emails.getSender(), reply);
 		return emailsRepository.save(reply).getId();
 	}
 

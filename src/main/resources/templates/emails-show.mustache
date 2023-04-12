@@ -12,4 +12,40 @@
 <div>{{text}}</div>
 {{/replys}}
 
+<h2>Reply</h2>
+<form id="reply-form" class="form form--reply">
+	<div class="form__row">
+		<textarea id="reply-textarea" class="form__input form__input--textarea"></textarea>
+	</div>
+	<div class="form__row">
+		<input type="submit" class="button form__input form__input--submit" value="Send">
+	</div>
+</form>
+
+<script>
+	{
+		const replyForm = document.getElementById("reply-form");
+		const replyTextarea = document.getElementById("reply-textarea");
+		replyForm.addEventListener("submit", event => {
+			event.preventDefault();
+			fetch(
+				"/api/v1/emails/{{id}}",
+				{
+					method: "POST",
+					headers: {
+						"Accept": "application/json",
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({
+						text: replyTextarea.value,
+					}),
+				},
+			)
+				.then(res => res.json())
+				.then(json => location.reload())
+				.catch(console.error);
+		});
+	}
+</script>
+
 {{>layout/footer}}
