@@ -1,6 +1,6 @@
 package sanko.suppii.service;
 
-import java.util.*;
+import java.util.*; //List
 import java.util.stream.Collectors;
 import java.lang.IllegalArgumentException;
 
@@ -26,10 +26,21 @@ public class EmailsService {
 	private final EmailsConnection emailsConnection;
 
 	public List<EmailsListResponseDto> listEmails() {
-		return emailsRepository.findByStartIsNull()
-			.stream()
-			.map(EmailsListResponseDto::new)
-			.collect(Collectors.toList());
+		List<Emails> emailsList = emailsRepository.findByStartIsNull();
+		List<EmailsListResponseDto> responseList = new ArrayList<>();
+
+		for (Emails emails : emailsList) {
+			Emails latest = emailsRepository.findFirstByStartOrderByModifiedDateDesc(emails.getId());
+			EmailsListResponseDto response = EmailsListResponseDto.builder()
+				.id(emails.getId())
+				.subject(emails.getSubject())
+				.sender(emails.getSender())
+				.modifiedDate(latest != null? latest.getModifiedDate(): emails.getModifiedDate())
+				.build();
+			responseList.add(response);
+		}
+
+		return responseList;
 	}
 
 	public EmailsResponseDto getEmailsById(Long id) {

@@ -8,5 +8,6 @@ public interface EmailsRepository extends JpaRepository<Emails, Long> {
 
 	List<Emails> findByStartIsNull();
 	List<Emails> findByStartEqualsOrderByIdAsc(Long id);
+	Emails findFirstByStartOrderByModifiedDateDesc(Long id);
 
 }
