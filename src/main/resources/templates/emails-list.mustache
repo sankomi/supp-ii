@@ -10,4 +10,20 @@
 	{{/emailsList}}
 </ul>	
 
+<div><button id="fetch">fetch emails</button></div>
+
+<script>
+	{
+		const fetchButton = document.getElementById("fetch");
+		fetchButton.addEventListener("click", event => {
+			fetch("/api/v1/emails/fetch")
+				.then(res => res.text())
+				.then(text => {
+					if (text === "true") location.reload();
+				})
+				.catch(console.error);
+		});
+	}
+</script>
+
 {{>layout/footer}}
