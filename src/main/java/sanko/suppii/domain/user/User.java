@@ -40,4 +40,8 @@ public class User {
 		return this.role.getKey();
 	}
 
+	public void changeRole(Role role) {
+		this.role = role;
+	}
+
 }
