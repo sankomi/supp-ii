@@ -1,20 +1,28 @@
 package sanko.suppii.web;
 
+import jakarta.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*; //GetMapping, PathVariable
 import org.springframework.ui.Model;
 import lombok.RequiredArgsConstructor;
 
 import sanko.suppii.service.EmailsService;
+import sanko.suppii.config.auth.dto.SessionUser;
 
 @RequiredArgsConstructor
 @Controller
 public class IndexController {
 
 	private final EmailsService emailsService;
+	private final HttpSession httpSession;
 
 	@GetMapping("/")
-	public String index() {
+	public String index(Model model) {
+		SessionUser user = (SessionUser) httpSession.getAttribute("user");
+		if (user != null) {
+			model.addAttribute("userName", user.getName());
+		}
 		return "index";
 	}
 

@@ -2,5 +2,12 @@
 
 <h1>Supp II</h1>
 <p>kind of support ticket help something application mk ii</p>
+{{#userName}}
+<p>hi {{userName}}!</p>
+<div><a href="/logout">logout</a></div>
+{{/userName}}
+{{^userName}}
+<div><a href="/oauth2/authorization/google">google login</a></div>
+{{/userName}}
 
 {{>layout/footer}}

@@ -78,6 +78,18 @@
 			<version>3.0.5</version>
 		</dependency>
 
+		<!-- oauth2 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-oauth2-client</artifactId>
+			<version>3.0.5</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+			<version>3.0.5</version>
+		</dependency>
+
 		<!-- dev tools -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
