@@ -79,11 +79,20 @@ public class EmailsService {
 		} else {
 			subject = emails.getSubject();
 		}
+
+		Emails lastEmails = emailsRepository.findFirstByStartOrderByModifiedDateDesc(start);
+		String replyString = requestDto.getText();
+		if (lastEmails != null) {
+			replyString += "\n\n---\n\n" + lastEmails.getText();
+		} else {
+			replyString += "\n\n---\n\n" + emails.getText();
+		}
+		
 		Emails reply = Emails.builder()
 			.subject(subject)
 			.sender(emailUsername)
 			.start(start)
-			.text(requestDto.getText())
+			.text(replyString)
 			.build();
 		emailsConnection.sendEmails(emails.getSender(), reply);
 		return emailsRepository.save(reply).getId();
