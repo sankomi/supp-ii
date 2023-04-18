@@ -7,6 +7,7 @@ import java.lang.IllegalArgumentException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.*; //Autowired, Value
+import org.springframework.scheduling.annotation.Scheduled;
 
 import sanko.suppii.domain.emails.Emails;
 import sanko.suppii.domain.emails.EmailsRepository;
@@ -66,6 +67,11 @@ public class EmailsService {
 			e.printStackTrace();
 			return false;
 		}
+	}
+
+	@Scheduled(cron = "0 * * * * *")
+	public void scheduleFetch() {
+		fetchEmails();
 	}
 
 	public Long replyEmails(Long id, EmailsReplyRequestDto requestDto) {
