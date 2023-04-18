@@ -83,9 +83,9 @@ public class EmailsService {
 		Emails lastEmails = emailsRepository.findFirstByStartOrderByModifiedDateDesc(start);
 		String replyString = requestDto.getText();
 		if (lastEmails != null) {
-			replyString += "\n\n---\n\n" + lastEmails.getText();
+			replyString += "\n\n---\n\nfrom <" + lastEmails.getSender() + ">:\n" + lastEmails.getText();
 		} else {
-			replyString += "\n\n---\n\n" + emails.getText();
+			replyString += "\n\n---\n\nfrom <" + emails.getSender() + ">:\n" + emails.getText();
 		}
 		
 		Emails reply = Emails.builder()

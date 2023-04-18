@@ -71,7 +71,8 @@ public class EmailsConnection {
 				}
 
 				String text = getText(messages[i]);
-				String replacedText = text.replaceAll("(?i)<br\\p{javaSpaceChar}(?:/>|>)", "#>newline<#")
+				String replacedText = text.replaceAll("(?i)<br>", "#>newline<#")
+					.replaceAll("(?i)<br/>", "#>newline<#")
 					.replaceAll("(?i)</p>", "</p>#>newline<#")
 					.replaceAll("(?i)</div>", "</div>#>newline<#")
 					.replaceAll("(?i)</li>", "</li>#>newline<#");
