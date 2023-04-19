@@ -71,7 +71,14 @@ public class EmailsConnection {
 				}
 
 				String text = getText(messages[i]);
-				String cleanText = Jsoup.parse(text).text();
+				String replacedText = text.replaceAll("(?i)<br>", "#>newline<#")
+					.replaceAll("(?i)<br/>", "#>newline<#")
+					.replaceAll("(?i)</p>", "</p>#>newline<#")
+					.replaceAll("(?i)</div>", "</div>#>newline<#")
+					.replaceAll("(?i)</li>", "</li>#>newline<#");
+				String cleanText = Jsoup.parse(replacedText)
+					.text()
+					.replaceAll("#>newline<#", "\n");
 
 				Address[] froms = messages[i].getFrom();
 				String sender = froms == null? null: ((InternetAddress) froms[0]).getAddress();

@@ -1,15 +1,19 @@
 {{>layout/header}}
 
 {{#emails}}
-<h1>{{subject}}</h1>
-<div>{{sender}}</div>
-<div>{{text}}</div>
+<details>
+	<summary><h1 style="display: inline-block;">{{subject}}</h1></summary>
+	<div>from &lt;{{sender}}&gt;:</div>
+	<div style="white-space: pre-line;">{{text}}</div>
+</details>
 {{/emails}}
 
 {{#replys}}
-<h2>{{subject}}</h2>
-<div>{{sender}}</div>
-<div>{{text}}</div>
+<details>
+	<summary><h2 style="display: inline-block;">{{subject}}</h2></summary>
+	<div>from &lt;{{sender}}&gt;:</div>
+	<div style="white-space: pre-line;">{{text}}</div>
+</details>
 {{/replys}}
 
 <h2>Reply</h2>
@@ -24,6 +28,9 @@
 
 <script>
 	{
+		const lastDetails = document.querySelector("details:last-of-type");
+		if (lastDetails) lastDetails.open = true;
+
 		const replyForm = document.getElementById("reply-form");
 		const replyTextarea = document.getElementById("reply-textarea");
 		replyForm.addEventListener("submit", event => {
@@ -42,7 +49,10 @@
 				},
 			)
 				.then(res => res.json())
-				.then(json => location.reload())
+				.then(json => {
+					replyTextarea.value = null;
+					location.reload();
+				})
 				.catch(console.error);
 		});
 	}

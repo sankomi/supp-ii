@@ -7,6 +7,7 @@ import java.lang.IllegalArgumentException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.*; //Autowired, Value
+import org.springframework.scheduling.annotation.Scheduled;
 
 import sanko.suppii.domain.emails.Emails;
 import sanko.suppii.domain.emails.EmailsRepository;
@@ -68,6 +69,11 @@ public class EmailsService {
 		}
 	}
 
+	@Scheduled(cron = "0 * * * * *")
+	public void scheduleFetch() {
+		fetchEmails();
+	}
+
 	public Long replyEmails(Long id, EmailsReplyRequestDto requestDto) {
 		Emails emails = emailsRepository.findById(id)
 			.orElseThrow(() -> new IllegalArgumentException("no emails with id = " + id));
@@ -79,11 +85,20 @@ public class EmailsService {
 		} else {
 			subject = emails.getSubject();
 		}
+
+		Emails lastEmails = emailsRepository.findFirstByStartOrderByModifiedDateDesc(start);
+		String replyString = requestDto.getText();
+		if (lastEmails != null) {
+			replyString += "\n\n---\n\nfrom <" + lastEmails.getSender() + ">:\n" + lastEmails.getText();
+		} else {
+			replyString += "\n\n---\n\nfrom <" + emails.getSender() + ">:\n" + emails.getText();
+		}
+		
 		Emails reply = Emails.builder()
 			.subject(subject)
 			.sender(emailUsername)
 			.start(start)
-			.text(requestDto.getText())
+			.text(replyString)
 			.build();
 		emailsConnection.sendEmails(emails.getSender(), reply);
 		return emailsRepository.save(reply).getId();
