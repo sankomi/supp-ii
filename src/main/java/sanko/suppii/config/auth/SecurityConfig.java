@@ -16,7 +16,8 @@ public class SecurityConfig {
 
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http.authorizeHttpRequests()
+		http.csrf().disable()
+			.authorizeHttpRequests()
 			.requestMatchers("/").permitAll()
 			.requestMatchers("/api/v1/**").permitAll()
 			.requestMatchers("/emails/").hasRole("GUEST")

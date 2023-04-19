@@ -14,13 +14,13 @@
 		const beUser = document.getElementById("user");
 		const beGuest = document.getElementById("guest");
 		beUser.addEventListener("click", event => {
-			fetch("/api/v1/user/user")
+			fetch("/api/v1/user/user", {method: "PUT"})
 				.then(res => res.text())
 				.then(console.log)
 				.catch(console.error);
 		});
 		beGuest.addEventListener("click", event => {
-			fetch("/api/v1/user/guest")
+			fetch("/api/v1/user/guest", {method: "PUT"})
 				.then(res => res.text())
 				.then(console.log)
 				.catch(console.error);

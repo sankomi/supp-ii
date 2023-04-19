@@ -16,7 +16,7 @@ public class UserApiController {
 	private final UserService userService;
 	private final HttpSession httpSession;
 
-	@GetMapping("/user")
+	@PutMapping("/user")
 	public boolean beUser() {
 		SessionUser user = (SessionUser) httpSession.getAttribute("user");
 		if (user != null) {
@@ -25,7 +25,7 @@ public class UserApiController {
 		return true;
 	}
 
-	@GetMapping("/guest")
+	@PutMapping("/guest")
 	public boolean beGuest() {
 		SessionUser user = (SessionUser) httpSession.getAttribute("user");
 		if (user != null) {
