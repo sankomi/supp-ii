@@ -1,0 +1,10 @@
+{{>layout/header}}
+
+<h1>Users</h1>
+<ul>
+	{{#userList}}
+	<li>{{name}}&lt;{{email}}&gt; ({{role}})</li>
+	{{/userList}}
+</ul>
+
+{{>layout/footer}}

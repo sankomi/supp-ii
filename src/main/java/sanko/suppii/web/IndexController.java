@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import lombok.RequiredArgsConstructor;
 
 import sanko.suppii.service.EmailsService;
+import sanko.suppii.service.UserService;
 import sanko.suppii.config.auth.dto.SessionUser;
 
 @RequiredArgsConstructor
@@ -15,6 +16,7 @@ import sanko.suppii.config.auth.dto.SessionUser;
 public class IndexController {
 
 	private final EmailsService emailsService;
+	private final UserService userService;
 	private final HttpSession httpSession;
 
 	@GetMapping("/")
@@ -30,6 +32,12 @@ public class IndexController {
 	public String listEmails(Model model) {
 		model.addAttribute("emailsList", emailsService.listEmails());
 		return "emails-list";
+	}
+
+	@GetMapping("/user/")
+	public String listUser(Model model) {
+		model.addAttribute("userList", userService.listUser());
+		return "user";
 	}
 
 	@GetMapping("/emails/{id}")

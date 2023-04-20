@@ -20,8 +20,7 @@ public class SecurityConfig {
 			.authorizeHttpRequests()
 			.requestMatchers("/").permitAll()
 			.requestMatchers("/api/v1/**").permitAll()
-			.requestMatchers("/emails/").hasRole("GUEST")
-			.requestMatchers("/emails/**").hasRole("USER")
+			.requestMatchers("/emails/**", "/user/**").hasAnyRole("GUEST", "USER")
 			.anyRequest().denyAll()
 			.and().logout().logoutSuccessUrl("/")
 			.and().oauth2Login().userInfoEndpoint().userService(customOAuth2UserService);
