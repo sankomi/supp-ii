@@ -4,7 +4,7 @@ import java.util.List;
 import jakarta.servlet.http.HttpSession;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.*; //PathVariable
 
 import sanko.suppii.service.UserService;
 import sanko.suppii.config.auth.dto.SessionUser;
@@ -23,22 +23,14 @@ public class UserApiController {
 		return userService.listUser();	
 	}
 
-	@PutMapping("/user")
-	public boolean beUser() {
-		SessionUser user = (SessionUser) httpSession.getAttribute("user");
-		if (user != null) {
-			userService.beUser(user);
-		}
-		return true;
+	@PutMapping("/user/{id}")
+	public boolean setUser(@PathVariable Long id) {
+		return userService.setUser(id);
 	}
 
-	@PutMapping("/guest")
-	public boolean beGuest() {
-		SessionUser user = (SessionUser) httpSession.getAttribute("user");
-		if (user != null) {
-			userService.beGuest(user);
-		}
-		return true;
+	@PutMapping("/guest/{id}")
+	public boolean setGuest(@PathVariable Long id) {
+		return userService.setGuest(id);
 	}
 
 }

@@ -3,8 +3,45 @@
 <h1>Users</h1>
 <ul>
 	{{#userList}}
-	<li>{{name}}&lt;{{email}}&gt; ({{role}})</li>
+	<li>
+		<div>{{name}}&lt;{{email}}&gt; ({{role}})</div>
+		<div>
+			<button class="user" data-user-id="{{id}}">set user</button>
+			<button class="guest" data-user-id="{{id}}">set guest</button>
+		</div>
+	</li>
 	{{/userList}}
 </ul>
+
+<script>
+	{
+		const userButtons = document.querySelectorAll(".user[data-user-id]");
+		const guestButtons = document.querySelectorAll(".guest[data-user-id]");
+
+		userButtons.forEach(userButton => {
+			const userId = userButton.dataset.userId;
+			userButton.addEventListener("click", event => {
+				fetch(`/api/v1/user/user/${userId}`, {method: "PUT"})
+					.then(res => res.text())
+					.then(text => {
+						if (text === "true") location.reload();
+					})
+					.catch(console.error);
+				});
+		});
+
+		guestButtons.forEach(guestButton => {
+			const userId = guestButton.dataset.userId;
+			guestButton.addEventListener("click", event => {
+				fetch(`/api/v1/user/guest/${userId}`, {method: "PUT"})
+					.then(res => res.text())
+					.then(text => {
+						if (text === "true") location.reload();
+					})
+					.catch(console.error);
+				});
+		});
+	}
+</script>
 
 {{>layout/footer}}

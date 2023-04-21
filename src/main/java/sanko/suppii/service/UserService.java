@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import sanko.suppii.domain.user.UserRepository;
 import sanko.suppii.domain.user.User;
 import sanko.suppii.domain.user.Role;
-import sanko.suppii.config.auth.dto.SessionUser;
 import sanko.suppii.web.dto.UserListResponseDto;
 
 @RequiredArgsConstructor
@@ -27,20 +26,23 @@ public class UserService {
 	}
 
 	@Transactional
-	public void beUser(SessionUser sessionUser) {
-		changeRole(sessionUser, Role.USER);
+	public boolean setUser(Long id) {
+		return changeRole(id, Role.USER);
 	}
 
 	@Transactional
-	public void beGuest(SessionUser sessionUser) {
-		changeRole(sessionUser, Role.GUEST);
+	public boolean setGuest(Long id) {
+		return changeRole(id, Role.GUEST);
 	}
-
-	public void changeRole(SessionUser sessionUser, Role role) {
-		userRepository.findByEmail(sessionUser.getEmail())
+	
+	private boolean changeRole(Long id, Role role) {
+		boolean[] changed = {false};
+		userRepository.findById(id)
 			.ifPresent(user -> {
 				user.changeRole(role);
+				changed[0] = true;
 			});
+		return changed[0];
 	}
 
 }

@@ -4,30 +4,7 @@
 <p>kind of support ticket help something application mk ii</p>
 {{#userName}}
 <p>hi {{userName}}!</p>
-<div>
-	<button id="user">be user</button>
-	<button id="guest">be guest</button>
-</div>
-
-<script>
-	{
-		const beUser = document.getElementById("user");
-		const beGuest = document.getElementById("guest");
-		beUser.addEventListener("click", event => {
-			fetch("/api/v1/user/user", {method: "PUT"})
-				.then(res => res.text())
-				.then(console.log)
-				.catch(console.error);
-		});
-		beGuest.addEventListener("click", event => {
-			fetch("/api/v1/user/guest", {method: "PUT"})
-				.then(res => res.text())
-				.then(console.log)
-				.catch(console.error);
-		});
-	}
-</script>
-
+<div><a href="/emails/">emails</a> <a href="/user/">users</a></div>
 <div><a href="/logout">logout</a></div>
 {{/userName}}
 {{^userName}}
